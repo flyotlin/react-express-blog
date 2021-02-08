@@ -7,7 +7,7 @@ import AddArticle from './AddArticle';
 import PageNotFound from './PageNotFound';
 import User from './User';
 import { Switch, Route, useRouteMatch, Link, Redirect } from 'react-router-dom'; 
-import WaitHolder from './WaitHolder';
+// import WaitHolder from './WaitHolder';
 
 const Index = () => {
     const [text, setText] = useState("");

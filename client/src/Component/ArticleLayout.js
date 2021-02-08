@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import Articles from './Articles';
 import axios from 'axios';
-import './style_wait.css';
+import './style_wait.sass';
 
 const ArticleLayout = (props) => {
     const [articles, setArticles] = useState([]);
