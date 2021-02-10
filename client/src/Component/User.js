@@ -7,6 +7,8 @@ import {
     Redirect,
 } from 'react-router-dom';
 import axios from 'axios';
+import { TextField, makeStyles, Typography, Button, Avatar } from '@material-ui/core';
+import LockOutlinedIcon from '@material-ui/icons/LockOutlined';
 
 /**
  * @param title: 
@@ -14,7 +16,38 @@ import axios from 'axios';
  * @param 
  */
 
+
+const useStyles = makeStyles((theme) => ({
+    root: {
+        display: 'flex',
+        flexDirection: 'column',
+        width: '80%',
+        margin: '0 auto',
+        marginTop: '70px',
+    },  
+    avatar: {
+        backgroundColor: theme.palette.secondary.main,
+        margin: '0 auto',
+        marginTop: '15px',
+    },
+    topHeader: {
+        margin: '0 auto',
+        marginTop: '15px',
+    },
+    form: {
+        display: 'flex',
+        flexDirection: 'column',
+        width: '35%',
+        margin: '0 auto',
+        marginTop: '15px',
+    },
+    formComp: {
+        margin: '10px',
+    },
+}));
+
 const User = (props) => {
+    const classes = useStyles();
     const history = useHistory();
     const [user, setUser] = useState({
         username: '',
@@ -45,27 +78,50 @@ const User = (props) => {
         return <Redirect to="/home" />
 
     return (
-        <div>
-            <h1>{props.title}</h1>
-            <div>
-                <Link to="/home">Index</Link>
-            </div>
-            <form onSubmit={handleFormSubmit}>
-                <div>
-                    <label for="">Username: </label>
-                    <input type="text" name="username" onChange={handleInputChange}></input>
-                </div>
-                <div>
-                    <label for="">E-mail: </label>
-                    <input type="text" name="email" onChange={handleInputChange}></input>
-                </div>
-                <div>
-                    <label for="">Password: </label>
-                    <input type="password" name="password" onChange={handleInputChange}></input>
-                </div>
-                <div>
-                    <input type="submit"></input>
-                </div>
+        <div className={classes.root}>
+            <Avatar className={classes.avatar} >
+                <LockOutlinedIcon />
+            </Avatar>
+            <Typography variant="h5" className={classes.topHeader}>
+                {props.title}
+            </Typography>
+            <form onSubmit={handleFormSubmit} className={classes.form}>
+                <TextField
+                    name="username"
+                    id="outlined-basic" 
+                    label="Username" 
+                    variant="outlined"
+                    required={true}
+                    onChange={handleInputChange}
+                    className={classes.formComp}
+                />
+                <TextField
+                    name="email"
+                    id="outlined-basic" 
+                    label="E-mail" 
+                    variant="outlined"
+                    required={true}
+                    onChange={handleInputChange}
+                    className={classes.formComp}
+                />
+                <TextField
+                    name="password"
+                    id="outlined-basic" 
+                    label="Password" 
+                    type="password"
+                    variant="outlined"
+                    required={true}
+                    onChange={handleInputChange}
+                    className={classes.formComp}
+                />
+                <Button
+                    type="submit"
+                    variant="contained"
+                    color="#00fe1a"
+                    className={classes.formComp}
+                >
+                    {props.title}
+                </Button>
             </form>
         </div>
     );

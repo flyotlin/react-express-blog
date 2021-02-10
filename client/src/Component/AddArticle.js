@@ -1,21 +1,46 @@
 import { useState } from 'react';
 import { Redirect, useHistory } from 'react-router-dom';
 import axios from 'axios';
+import { TextField, makeStyles, Typography, Button, Avatar } from '@material-ui/core';
+
+const useStyles = makeStyles((themes) => ({
+    root: {
+        display: 'flex',
+        flexDirection: 'column',
+        margin: '0 auto',
+        width: '80%',
+        marginTop: '70px',
+    },
+    header: {
+        margin: '0 auto',
+        fontWeight: 'bolder',
+        marginTop: '15px',
+    },
+    form: {
+        display: 'flex',
+        flexDirection: 'column',
+        width: '50%',
+        margin: '0 auto',
+    },
+    formComp: {
+        margin: '10px',
+    },
+}));
 
 const AddArticle = (props) => {
-    // const [title, setTitle] = useState('');
-    // const [author, setAuthor] = useState(props.session.username);
-    // const [content, setContent] = useState('');
+    const classes = useStyles();
     const history = useHistory();
     const [article, setArticle] = useState({
         title: '',
-        author: props.session.username,
         content: ''
     });
 
     const handleFormSubmit = async(event) => {
         event.preventDefault();
         try {
+            let article_tmp = article;
+            article_tmp['author'] = props.session.username;
+            setArticle(article_tmp);
             await axios.post('/addArticle', article);
             history.push('/home');
         } catch (err) {
@@ -24,7 +49,6 @@ const AddArticle = (props) => {
     };
 
     const handleInputChange = (event) => {
-        
         let article_tmp = article;
         article_tmp[event.target.name] = event.target.value;
         // console.log(event.target.name + "  " + event.target.value);
@@ -36,20 +60,41 @@ const AddArticle = (props) => {
         return <Redirect to="/home" />;
 
     return (
-        <div>
-            <h1>Add Article</h1>
-            <form onSubmit={handleFormSubmit}>
-                <div>
-                    <label>Title:</label>
-                    <input type="text" name="title" onChange={handleInputChange}></input>
-                </div>
-                <div>
-                    <label>Content:</label>
-                    <input type="text" name="content" onChange={handleInputChange}></input>
-                </div>
-                <div>
-                    <input type="submit"></input>
-                </div>
+        <div className={classes.root}>
+            <Typography
+                className={classes.header}
+                variant="h4"
+            >
+                Add Article
+            </Typography>
+            <form onSubmit={handleFormSubmit} className={classes.form}>
+                <TextField
+                    name="title"
+                    id="outlined-basic"
+                    label="Title"
+                    variant="outlined"
+                    onChange={handleInputChange}
+                    className={classes.formComp}
+                />
+                <TextField
+                    name="content"
+                    id="outlined-multiline-static"
+                    label="Content"
+                    multiline
+                    rows={10}
+                    placeholder="Type in your content here!"
+                    variant="outlined"
+                    onChange={handleInputChange}
+                    className={classes.formComp}
+                />
+                <Button
+                    type="submit"
+                    variant="contained"
+                    color="primary"
+                    className={classes.formComp}
+                >
+                    Submit
+                </Button>
             </form>
         </div>
     );

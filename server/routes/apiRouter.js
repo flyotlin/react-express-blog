@@ -28,7 +28,7 @@ router.get('/session', (req, res) => {
 
 router.get('/getAllArticle', async(req, res) => {
     let result = await Article.find({});
-    console.log(result);
+    // console.log(result);
     res.send(result);
     return;
 });
@@ -88,6 +88,23 @@ router.post('/addArticle', async(req, res) => {
         content: req.body.content
     });
     return res.sendStatus(200);
+});
+
+router.post('/deletePosts', async (req, res) => {
+    // const keyValue = (input) => Object.entries(input).forEach(([key, value]) => {
+    //     console.log("key: " + typeof(key) + ": " + value);
+    // });
+
+    // keyValue(req.body);
+    
+    // console.log(req.body.id);
+
+    try {
+        await Article.findByIdAndDelete(req.body.id);
+        return res.sendStatus(200);
+    } catch (err) {
+        return res.sendStatus(403);
+    }
 });
 
 module.exports = router;

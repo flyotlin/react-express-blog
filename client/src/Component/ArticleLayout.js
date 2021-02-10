@@ -11,11 +11,10 @@ const ArticleLayout = (props) => {
         setIsFetched(false);
         try {
             let res = await axios.get('/getAllArticle');
-            // console.log(res.data);
             setTimeout(() => {
-                setArticles(res.data);
+                setArticles(res.data.reverse());
                 setIsFetched(true);
-            }, 2000);
+            }, 1000);
         } catch (err) {
             setIsFetched(false);
         }
@@ -26,21 +25,24 @@ const ArticleLayout = (props) => {
     }, []);
 
     if (isFetched === false)
-        return (
+        return ( 
             <div id="spinner" className="container">
                 <div className="loading"></div>
             </div>
         );
     return (
-        <div>
+        <div style={{marginTop: 69}}>
             {
                 articles.map((posts) => (
                     <Articles 
-                        key={posts.title}
+                        key={posts._id}
+                        _id={posts._id}
                         title={posts.title} 
                         author={posts.author} 
                         content={posts.content} 
                         date={posts.date}
+                        session={props.session}
+                        getArticles={getArticles}
                     />
                 ))
             }

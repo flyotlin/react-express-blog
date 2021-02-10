@@ -1,13 +1,16 @@
 import React from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useHistory } from 'react-router-dom';
 import axios from 'axios';
+import { Button } from '@material-ui/core';
 
 const Nav = (props) => {
+    const history = useHistory();
     const handleLogout = async() => {
         try {
-            await axios.post('logout');
+            await axios.post('/logout');
             const res = await axios.get('/session');
             props.setSession(res.data);
+            history.push("/home");
         } catch (err) {
 
         }
@@ -15,32 +18,20 @@ const Nav = (props) => {
 
     if (props.isLoggedin === true) {
         return (
-            <ul>
-                <li>
-                    <Link to="/home">Index</Link>
-                </li>
-                <li>
-                    <Link to="/home/addarticle">Add Article</Link>
-                </li>
-                <li>
-                    <button onClick={handleLogout}>Log out</button>
-                </li>
-            </ul>
+            <React.Fragment>
+                <Button href="/home/addarticle" color="inherit">Add Article</Button>
+                <Button onClick={handleLogout} color="inherit">Log out</Button>
+                <Button href="/home/about" color="inherit">About</Button>
+            </React.Fragment>
         );
     }
     
     return (
-        <ul>
-            <li>
-                <Link to="/home">Index</Link>
-            </li>
-            <li>
-                <Link to="/home/register">Register</Link>
-            </li>
-            <li>
-                <Link to="/home/login">Log in</Link>
-            </li> 
-        </ul>
+        <React.Fragment>
+            <Button href="/home/login" color="inherit">Login</Button>
+            <Button href="/home/register" color="inherit">Register</Button>
+            <Button href="/home/about" color="inherit">About</Button>
+        </React.Fragment>
     );
 }
 

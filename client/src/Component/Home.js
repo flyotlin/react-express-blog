@@ -6,13 +6,29 @@ import ArticleLayout from './ArticleLayout';
 import AddArticle from './AddArticle';
 import PageNotFound from './PageNotFound';
 import User from './User';
+import About from './About';
 import { Switch, Route, useRouteMatch, Link, Redirect } from 'react-router-dom'; 
+import { Toolbar, Button, AppBar, IconButton, Typography, makeStyles, Card, CardContent, CardHeader, Box, Modal } from '@material-ui/core';
 // import WaitHolder from './WaitHolder';
 
+const useStyles = makeStyles((theme) => ({
+    root: {
+        flexGrow: 1,
+    },
+    menuButton: {
+        marginRight: theme.spacing(2),
+    },
+    title: {
+        flexGrow: 1,
+    },
+}));
+
 const Index = () => {
+    const classes = useStyles();
     const [text, setText] = useState("");
     const [session, setSession] = useState({});
     const { path, url } = useRouteMatch();
+    const [open, setOpen] = useState(false);
 
     const fetchSetText = async() => {
         const res = await axios.get('/api');
@@ -24,6 +40,14 @@ const Index = () => {
         setSession(res.data);
     }
 
+    const handleOpen = () => {
+        setOpen(true);
+    };
+
+    const handleClose = () => {
+        setOpen(false);
+    };
+
     useEffect(() => {
         fetchSetText();
         fetchIsLoggedIn();
@@ -33,31 +57,34 @@ const Index = () => {
     if (session.isLoggedin)
         Greeting = <p>Welcome, {session.username}!</p>;
     else
-        Greeting = <p>Hello, guest!</p>
-
-
-    let article_set = [
-        {
-            title: "Covid-19 horrifying",
-            author: "flyotlin",
-            content: "We have been threatened by the virus for around 2 years worldwide. We've bear huge economic loss globally.",
-        }, 
-        {
-            title: "花に亡霊 / ヨルシカ 【りかこ】 弾き語り",
-            author: "りかこ",
-            content: "本家: https://youtu.be/9lVPAWLWtWc​ すごくすごく素敵な曲です、、、Twitterは @rkk_tomakichi ( https://twitter.com/rkk_tomakichi​ ) で、 Instagramは ri_reeee ( https://www.instagram.com/ri_reeee/​ )だよ",
-        }
-    ];
+        Greeting = <p>Please log in!</p>
 
     return (
         <div>
-            <h1>React-express Blog</h1>
-            <p>A blog system uses react as front end, and uses express+mongodb as back end api. <br/>I use react-router to achieve the multipage/router functionality.</p>
-            <h3>from back-end API: {text}</h3>
-            <Nav 
-                isLoggedin={session.isLoggedin} 
-                setSession={setSession}
-            />
+            <AppBar position="fixed">
+                <Toolbar>
+                    <Typography variant="h5" className={classes.title}>
+                        <Link to="/home" style={{textDecoration: 'none', color: 'white', fontWeight: 'bolder'}}>React-express blog</Link>
+                    </Typography>
+                    {Greeting}
+                    <Nav 
+                        isLoggedin={session.isLoggedin} 
+                        setSession={setSession}
+                    />
+                </Toolbar>
+            </AppBar>
+            {/* <Button onClick={handleOpen}>open modal</Button>
+            <Modal
+                open={open}
+                onClose={handleClose}
+                aria-labelledby="simple-modal-title"
+                aria-describedby="simple-modal-description"
+            >
+                <div>
+                    Welcome open this modal!
+                </div>
+            </Modal> */}
+
             <Switch>
                 <Route path="/home/register">
                     <User
@@ -78,9 +105,11 @@ const Index = () => {
                 <Route path="/home/addarticle">
                     <AddArticle session={session} />
                 </Route>
+                <Route path="/home/about">
+                    <About />
+                </Route>
                 <Route path="">
-                    {Greeting}
-                    <ArticleLayout />
+                    <ArticleLayout session={session} />
                 </Route>
                 <Route>
                     <PageNotFound />
