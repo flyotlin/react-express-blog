@@ -101,7 +101,7 @@ router.post('/deletePosts', async (req, res) => {
 
 router.post('/editPosts', async (req, res) => {
     try {
-        await Article.findByIdAndUpdate(req.body._id, {
+        await Article.findByIdAndUpdate(req.body.id, {
             title: req.body.title,
             content: req.body.content,
             date: req.body.date,
