@@ -16,10 +16,21 @@ const Nav = (props) => {
         }
     };
 
+    const handleAddArticle = () => {
+        history.push({
+            pathname: "/home/addarticle",
+            state: {
+                isEdit: false,
+            },
+        });
+    }
+
+    // href="/home/addarticle"
+
     if (props.isLoggedin === true) {
         return (
             <React.Fragment>
-                <Button href="/home/addarticle" color="inherit">Add Article</Button>
+                <Button onClick={handleAddArticle} color="inherit">Add Article</Button>
                 <Button onClick={handleLogout} color="inherit">Log out</Button>
                 <Button href="/home/about" color="inherit">About</Button>
             </React.Fragment>

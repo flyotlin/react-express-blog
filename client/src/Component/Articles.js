@@ -60,6 +60,20 @@ const Articles = (props) => {
         }
     };
 
+    const handleEdit = () => {
+        history.push({
+            pathname: '/home/addarticle',
+            state: {
+                _id: props._id,
+                title: title,
+                author: author,
+                date: date,
+                content: content,
+                isEdit: true,
+            },
+        });
+    };
+
     return (
         <Card className={cards.root}>
             <CardContent>
@@ -84,7 +98,9 @@ const Articles = (props) => {
                     (props.session.isLoggedin === true && props.session.username === author) ? (
                     <React.Fragment>
                         <IconButton>
-                            <EditIcon />
+                            <EditIcon 
+                                onClick={handleEdit}
+                            />
                         </IconButton>
                         <IconButton>
                             <DeleteIcon

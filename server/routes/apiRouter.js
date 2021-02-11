@@ -91,16 +91,21 @@ router.post('/addArticle', async(req, res) => {
 });
 
 router.post('/deletePosts', async (req, res) => {
-    // const keyValue = (input) => Object.entries(input).forEach(([key, value]) => {
-    //     console.log("key: " + typeof(key) + ": " + value);
-    // });
-
-    // keyValue(req.body);
-    
-    // console.log(req.body.id);
-
     try {
         await Article.findByIdAndDelete(req.body.id);
+        return res.sendStatus(200);
+    } catch (err) {
+        return res.sendStatus(403);
+    }
+});
+
+router.post('/editPosts', async (req, res) => {
+    try {
+        await Article.findByIdAndUpdate(req.body._id, {
+            title: req.body.title,
+            content: req.body.content,
+            date: req.body.date,
+        });
         return res.sendStatus(200);
     } catch (err) {
         return res.sendStatus(403);
